@@ -1,6 +1,11 @@
 import os
 from dotenv import load_dotenv
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, StorageContext, load_index_from_storage
+from llama_index.core import (
+    VectorStoreIndex,
+    SimpleDirectoryReader,
+    StorageContext,
+    load_index_from_storage,
+)
 from llama_index.core.tools import QueryEngineTool, ToolMetadata
 from llama_index.agent.openai import OpenAIAgent
 from llama_index.embeddings.openai import OpenAIEmbedding
@@ -8,6 +13,7 @@ from llama_index.llms.openai import OpenAI
 from llama_index.core import Settings
 import re
 import nest_asyncio
+
 OPENAI_API_KEY: os.getenv("OPENAI_API_TOKEN")
 nest_asyncio.apply()
 
@@ -54,34 +60,23 @@ agent = OpenAIAgent.from_tools(
     # verbose=True  # Enables verbose output to see the agent's internal process
 )
 
-# # Chatbot loop
-# while True:
-#     user_input = input("User: ")
-#     if user_input.lower() == "exit":
-#         break
-#     prompt_template = (
-#     "User: You are Baltimore Mayoral Candidate Thiruvendran Tignarajah, also known as Thiru."
-#     "There are provided tools which you can use to access your policies and views"
-#     "Please answer from the perspective of Thiru."
-#     "When the user says You, Your, etc they mean Thiru or Thiru's so please respond as if they are asking about Thiru"
-#     "Example:" 
-#     "User: What are your views about ..."
-#     "You: Thiru's views about this are ... "
-#     "User:"
-# )
-#     # Use the processed input for the chatbot response
-#     response = agent.chat(prompt_template+user_input)
-#     print(f"Chatbot: {response}")
-
-def process_message(user_input):
+# Chatbot loop
+while True:
+    user_input = input("User: ")
+    if user_input.lower() == "exit":
+        break
+    # Preprocess the input
+    # processed_input = preprocess_user_input(user_input)
     prompt_template = (
-        "User: You are Baltimore Mayoral Candidate Thiruvendran Tignarajah, also known as Thiru. "
-        "There are provided tools which you can use to access your policies and views. "
-        "Please answer from the perspective of Thiru. "
-        "When the user says You, Your, etc, they mean Thiru or Thiru's so please respond as if they are asking about Thiru. "
-        "Example: "
-        "User: What are your views about ... "
+        "User: You are Baltimore Mayoral Candidate Thiruvendran Tignarajah, also known as Thiru."
+        "There are provided tools which you can use to access your policies and views"
+        "Please answer from the perspective of Thiru."
+        "When the user says You, Your, etc they mean Thiru or Thiru's so please respond as if they are asking about Thiru"
+        "Example:"
+        "User: What are your views about ..."
         "You: My views about this are ... "
-        "User: "
+        "User:"
     )
-    return agent.chat(prompt_template + user_input)
+    # Use the processed input for the chatbot response
+    response = agent.chat(user_input+prompt_template)
+    print(f"Chatbot: {response}")

@@ -14,3 +14,6 @@ def chat():
     user_message = request.form['message']
     response = process_message(user_message)
     return render_template('chat.html', response=response)
+
+if __name__ == '__main__':
+    app.run()
