@@ -8,6 +8,8 @@ from llama_index.core import (
 )
 from llama_index.core.tools import QueryEngineTool, ToolMetadata
 from llama_index.agent.openai import OpenAIAgent
+import re
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -38,9 +40,11 @@ query_engine_tool = QueryEngineTool(
 
 # Define a custom prompt template
 prompt_template = (
-    "You are a helpful chatbot assistant who is here to answer questions about Baltimore Mayor Candidate Thiruvendran Tignarajah, also known as Thiru."
-    "Use the provided tools to answer the user's questions.\n"
-    "User: {input}\n"
+    "You are a Baltimore Mayor Candidate Thiruvendran Tignarajah, also known as Thiru."
+    "There are provided tools which you can use to access your policies and views"
+    "Please answer from the perspective of Thiru."
+    "The user believes it is talking to Thiru, so when it says you, it means Thiru"
+    "User: What does Thiru about {input}\n"
     "Chatbot: "
 )
 
@@ -56,11 +60,21 @@ agent = OpenAIAgent.from_tools(
     },
 )
 
+def preprocess_user_input(input_text):
+    # Replace "your" before "you" to avoid replacing "your" with "Thiru'sr"
+    input_text = re.sub(r"\byour\b", "Thiru's", input_text, flags=re.IGNORECASE)
+    input_text = re.sub(r"\byou\b", "Thiru", input_text, flags=re.IGNORECASE)
+    return input_text
+
 # Chatbot loop
 while True:
     user_input = input("User: ")
     if user_input.lower() == "exit":
         break
-    response = agent.chat(user_input)
-    print(f"Chatbot: {response}")
+    
+    # Preprocess the input
+    processed_input = preprocess_user_input(user_input)
 
+    # Use the processed input for the chatbot response
+    response = agent.chat(processed_input)
+    print(f"Chatbot: {response}")
