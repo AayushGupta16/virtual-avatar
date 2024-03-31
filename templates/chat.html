@@ -57,11 +57,11 @@
                 var loadingHtml = '<div id="loadingMessage" class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://i.ibb.co/fSNP7Rz/icons8-chatgpt-512.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer"><span id="loadingText">.</span><span class="msg_time">' + str_time + '</span></div></div>';
                 $("#messageFormeight").append(loadingHtml);
 
-                var dots = 1;
+                var dots = 0;
                 var interval = setInterval(function() {
                     var loadingText = $("#loadingText");
-                    dots = (dots % 3) + 1;
-                    loadingText.text("" + ".".repeat(dots));
+                    dots = (dots % 2) + 1;
+                    loadingText.text("." + ".".repeat(dots));
                 }, 500);
 
 				$.ajax({
@@ -79,7 +79,6 @@
                         console.error(xhr.responseText);
                     }
                 });
-                event.preventDefault();
 				event.preventDefault();
 			});
 		});
