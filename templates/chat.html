@@ -60,8 +60,9 @@
                 var dots = 0;
                 var interval = setInterval(function() {
                     var loadingText = $("#loadingText");
-                    dots = (dots % 2) + 1;
+                    dots = (dots % 3);
                     loadingText.text("." + ".".repeat(dots));
+                    dots = dots + 1;
                 }, 500);
 
 				$.ajax({
@@ -69,7 +70,7 @@
                     url: "/chat",
                     data: { message: rawText },
                     success: function(data) {
-                        $("#messageFormeight .msg_cotainer:last-child").remove();
+                        // $("#messageFormeight .msg_cotainer:last-child").remove();
                         $("#messageFormeight .d-flex:last-child").remove();
     
                         var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://i.ibb.co/fSNP7Rz/icons8-chatgpt-512.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + data + '<span class="msg_time">' + str_time + '</span></div></div>';
