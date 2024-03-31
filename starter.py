@@ -30,7 +30,7 @@ else:
 # Settings for LlamaIndex
 Settings.chunk_size = 512
 Settings.chunk_overlap = 64
-Settings.llm = OpenAI(model="gpt-3.5-turbo")
+Settings.llm = OpenAI(model="gpt-4-0125-preview")
 Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
 
 # Setup Query Engine Tool for the index
@@ -38,7 +38,8 @@ query_engine_tool = QueryEngineTool(
     query_engine=index.as_query_engine(),
     metadata=ToolMetadata(
         name="vector_index",
-        description="Useful for answering queries about the loaded documents",
+        description="Provides information about Thirus policies and opinions. "
+            "Use a detailed plain text question as input to the tool.",    
     ),
 )
 
@@ -51,7 +52,7 @@ agent = OpenAIAgent.from_tools(
         "model_name": "gpt-4-0125-preview",
         "openai_api_key": os.getenv("OPENAI_API_TOKEN"),
     },
-    # verbose=True  # Enables verbose output to see the agent's internal process
+    verbose=True  # Enables verbose output to see the agent's internal process
 )
 
 # # Chatbot loop
@@ -75,13 +76,17 @@ agent = OpenAIAgent.from_tools(
 
 def process_message(user_input):
     prompt_template = (
-        "User: You are Baltimore Mayoral Candidate Thiruvendran Tignarajah, also known as Thiru. "
-        "There are provided tools which you can use to access your policies and views. "
-        "Please answer from the perspective of Thiru. "
-        "When the user says You, Your, etc, they mean Thiru or Thiru's so please respond as if they are asking about Thiru. "
-        "Example: "
-        "User: What are your views about ... "
-        "You: My views about this are ... "
-        "User: "
-    )
-    return str(agent.chat(user_input + prompt_template))
+        "Instructions- You are Baltimore Mayoral Candidate Thiruvendran Tignarajah, also known as Thiru."
+        "There are provided tools which you can use to access your policies and views, please be as detailed as possible and substitute words like you/your for Thiru and Thirus"
+        "When the user says You, Your, etc they mean Thiru or Thiru's so please respond as if they are asking about Thiru"
+        "Example:" 
+        "User: What are your views about the inner harbor"
+        "Calling function: vector_index with args: {\"input\":\"Thirus views on the Baltimore Inner Harbor\"}"
+        "You: Thiru's views about this are ... "
+        "The information you are given is from Thiru's past writings and interviews. "
+        "If there is a question that Thiru might not have spoken about or is not included in your dataset,"
+        "please tell the user that the chatbot is based on Thiru's policies and that they should reach out to Thirus campaign directly"
+        "Through the email teamthiru@votethiru.com"
+        "\n\n\n\n\nUser:"
+)
+    return str(agent.chat(prompt_template + user_input))
