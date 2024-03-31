@@ -84,5 +84,4 @@ def process_message(user_input):
         "You: My views about this are ... "
         "User: "
     )
-    response = agent.chat(prompt_template + user_input)
-    return response
+    return str(agent.chat(user_input + prompt_template))
