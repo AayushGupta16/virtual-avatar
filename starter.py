@@ -1,17 +1,17 @@
 import os
 from dotenv import load_dotenv
-from llama_index.core import (
-    VectorStoreIndex,
-    SimpleDirectoryReader,
-    StorageContext,
-    load_index_from_storage,
-)
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, StorageContext, load_index_from_storage
 from llama_index.core.tools import QueryEngineTool, ToolMetadata
 from llama_index.agent.openai import OpenAIAgent
+from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.llms.openai import OpenAI
+from llama_index.core import Settings
 import re
+import nest_asyncio
+OPENAI_API_KEY: os.getenv("OPENAI_API_TOKEN")
+nest_asyncio.apply()
 
-
-# Load environment variables from .env file
+# Load environment variables
 load_dotenv()
 
 # Check if storage already exists
@@ -27,57 +27,50 @@ else:
     storage_context = StorageContext.from_defaults(persist_dir=PERSIST_DIR)
     index = load_index_from_storage(storage_context)
 
-query_engine = index.as_query_engine()
+# Settings for LlamaIndex
+Settings.chunk_size = 512
+Settings.chunk_overlap = 64
+Settings.llm = OpenAI(model="gpt-3.5-turbo")
+Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
 
-# Define a QueryEngineTool for the index
+# Setup Query Engine Tool for the index
 query_engine_tool = QueryEngineTool(
-    query_engine=query_engine,
+    query_engine=index.as_query_engine(),
     metadata=ToolMetadata(
         name="vector_index",
         description="Useful for answering queries about the loaded documents",
     ),
 )
 
-# Define a custom prompt template
-prompt_template = (
-    "You are a Baltimore Mayor Candidate Thiruvendran Tignarajah, also known as Thiru."
-    "There are provided tools which you can use to access your policies and views"
-    "Please answer from the perspective of Thiru."
-    "When the user says You, Your, etc they mean Thiru or Thiru's so please respond as if they are asking about Thiru"
-    "Example:" 
-    "User: What are your views about ..."
-    "You: Thiru's views about this are ... "
-    "User: {input}\n"
-    "Chatbot: "
-)
-
-# Create an OpenAIAgent with the query engine tool, custom prompt, and specified model
+# Create an OpenAIAgent with the query engine tool
 agent = OpenAIAgent.from_tools(
-    [query_engine_tool],
-    prompt=prompt_template,
+    tools=[query_engine_tool],
     llm_kwargs={
-        "temperature": 0.7,
+        "temperature": 0,
         "max_tokens": 500,
         "model_name": "gpt-4-0125-preview",
         "openai_api_key": os.getenv("OPENAI_API_TOKEN"),
     },
+    # verbose=True  # Enables verbose output to see the agent's internal process
 )
-
-def preprocess_user_input(input_text):
-    # Replace "your" before "you" to avoid replacing "your" with "Thiru'sr"
-    input_text = re.sub(r"\byour\b", "Thiru's", input_text, flags=re.IGNORECASE)
-    input_text = re.sub(r"\byou\b", "Thiru", input_text, flags=re.IGNORECASE)
-    return input_text
 
 # Chatbot loop
 while True:
     user_input = input("User: ")
     if user_input.lower() == "exit":
         break
-    
     # Preprocess the input
-    processed_input = preprocess_user_input(user_input)
-
+    # processed_input = preprocess_user_input(user_input)
+    prompt_template = (
+    "User: You are Baltimore Mayoral Candidate Thiruvendran Tignarajah, also known as Thiru."
+    "There are provided tools which you can use to access your policies and views"
+    "Please answer from the perspective of Thiru."
+    "When the user says You, Your, etc they mean Thiru or Thiru's so please respond as if they are asking about Thiru"
+    "Example:" 
+    "User: What are your views about ..."
+    "You: Thiru's views about this are ... "
+    "User:"
+)
     # Use the processed input for the chatbot response
-    response = agent.chat(processed_input)
+    response = agent.chat(prompt_template+user_input)
     print(f"Chatbot: {response}")
