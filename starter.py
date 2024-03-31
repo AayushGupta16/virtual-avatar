@@ -1,6 +1,11 @@
 import os
 from dotenv import load_dotenv
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, StorageContext, load_index_from_storage
+from llama_index.core import (
+    VectorStoreIndex,
+    SimpleDirectoryReader,
+    StorageContext,
+    load_index_from_storage,
+)
 from llama_index.core.tools import QueryEngineTool, ToolMetadata
 from llama_index.agent.openai import OpenAIAgent
 from llama_index.embeddings.openai import OpenAIEmbedding
@@ -8,6 +13,7 @@ from llama_index.llms.openai import OpenAI
 from llama_index.core import Settings
 import re
 import nest_asyncio
+
 OPENAI_API_KEY: os.getenv("OPENAI_API_TOKEN")
 nest_asyncio.apply()
 
@@ -64,7 +70,7 @@ agent = OpenAIAgent.from_tools(
 #     "There are provided tools which you can use to access your policies and views"
 #     "Please answer from the perspective of Thiru."
 #     "When the user says You, Your, etc they mean Thiru or Thiru's so please respond as if they are asking about Thiru"
-#     "Example:" 
+#     "Example:"
 #     "User: What are your views about ..."
 #     "You: Thiru's views about this are ... "
 #     "User:"
@@ -72,6 +78,7 @@ agent = OpenAIAgent.from_tools(
 #     # Use the processed input for the chatbot response
 #     response = agent.chat(prompt_template+user_input)
 #     print(f"Chatbot: {response}")
+
 
 def process_message(user_input):
     prompt_template = (
@@ -84,4 +91,4 @@ def process_message(user_input):
         "You: My views about this are ... "
         "User: "
     )
-    return agent.chat(prompt_template + user_input)
+    return str(agent.chat(user_input + prompt_template))
