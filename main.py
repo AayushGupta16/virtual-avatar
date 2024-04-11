@@ -12,7 +12,8 @@ def index():
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
     user_message = request.form["message"]
-    return process_message(user_message)
+    chat_text, audio_data = process_message(user_message)
+    return chat_text
 
 
 if __name__ == "__main__":
