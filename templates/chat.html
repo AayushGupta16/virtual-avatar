@@ -70,11 +70,16 @@
                     url: "/chat",
                     data: { message: rawText },
                     success: function(data) {
-                        // $("#messageFormeight .msg_cotainer:last-child").remove();
+                        var textMsg = response[0];
+                        var audioMsg = response[1];
+
                         $("#messageFormeight .d-flex:last-child").remove();
     
-                        var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://i.ibb.co/fSNP7Rz/icons8-chatgpt-512.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + data + '<span class="msg_time">' + str_time + '</span></div></div>';
+                        var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://i.ibb.co/fSNP7Rz/icons8-chatgpt-512.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + textMsg + '<span class="msg_time">' + str_time + '</span></div></div>';
                         $("#messageFormeight").append(botHtml);
+
+                        var audio = new Audio("data:audio/mpeg;base64," + audio_data);
+                        audio.play();
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText);
