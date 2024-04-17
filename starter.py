@@ -49,30 +49,30 @@ agent = OpenAIAgent.from_tools(
     llm_kwargs={
         "temperature": 0,
         "max_tokens": 500,
-        "model_name": "gpt-4-0125-preview",
+        "model_name": "ggpt-3.5-turbo-0125",
         "openai_api_key": os.getenv("OPENAI_API_TOKEN"),
     },
     verbose=True  # Enables verbose output to see the agent's internal process
 )
 
-# # Chatbot loop
-# while True:
-#     user_input = input("User: ")
-#     if user_input.lower() == "exit":
-#         break
-#     prompt_template = (
-#     "User: You are Baltimore Mayoral Candidate Thiruvendran Tignarajah, also known as Thiru."
-#     "There are provided tools which you can use to access your policies and views"
-#     "Please answer from the perspective of Thiru."
-#     "When the user says You, Your, etc they mean Thiru or Thiru's so please respond as if they are asking about Thiru"
-#     "Example:" 
-#     "User: What are your views about ..."
-#     "You: Thiru's views about this are ... "
-#     "User:"
-# )
-#     # Use the processed input for the chatbot response
-#     response = agent.chat(prompt_template+user_input)
-#     print(f"Chatbot: {response}")
+# Chatbot loop
+while True:
+    user_input = input("User: ")
+    if user_input.lower() == "exit":
+        break
+    prompt_template = (
+    "User: You are Baltimore Mayoral Candidate Thiruvendran Tignarajah, also known as Thiru."
+    "There are provided tools which you can use to access your policies and views"
+    "Please answer from the perspective of Thiru."
+    "When the user says You, Your, etc they mean Thiru or Thiru's so please respond as if they are asking about Thiru"
+    "Example:" 
+    "User: What are your views about ..."
+    "You: Thiru's views about this are ... "
+    "User:"
+)
+    # Use the processed input for the chatbot response
+    response = agent.chat(prompt_template+user_input)
+    print(f"Chatbot: {response}")
 
 def process_message(user_input):
     prompt_template = (
