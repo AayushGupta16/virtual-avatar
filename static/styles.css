@@ -11,17 +11,23 @@ html {
     background-color: rgba(5,34,64,255);
     text-align: left;
     top: 0;
-    height: 10%;
+    height: 10%;  /* Consider adjusting this if it's too small or too large */
     z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 20px;
+    position: relative;
+    width: 100%;
 }
-
 
 .banner img {
-    max-width: 100%; /* Ensure the image does not exceed the width of the container */
-    max-height: 100%; /* Limit the height of the image */
-    left: 100%;
+    max-width: 30%;  /* Keeps the image width within limits */
+    height: auto;  /* Maintains the image's aspect ratio */
+    padding-left: 100px;  /* Adds padding to the left of the image */
     z-index: 101;
 }
+
 
 .chat {
     margin-top: auto;
@@ -33,7 +39,7 @@ html {
     /* Set the width to 100% of the viewport width */
     height: 90vh;
     /* Set the height to 100% of the viewport height */
-    border-radius: 15px !important;
+    /* border-radius: 15px !important; */
     background-color: rgba(0, 0, 0, 0.4) !important;
     box-sizing: border-box;
     /* Includes padding and border in the element's total width and height */
@@ -43,6 +49,20 @@ html {
     /* Aligns the top edge of the element with the viewport */
     left: 0;
     /* Aligns the left edge of the element with the viewport */
+}
+
+.back-to-site {
+    font-size: 22px; /* Font size of the text */
+    font-weight: 700; /* Bold weight */
+    font-family: 'Montserrat', sans-serif; /* Apply Montserrat font here */
+    color: white; /* This ensures the text is white */
+    padding-right: 30px;  /* Adds padding to the left of the image */
+
+}
+
+.back-to-site a {
+    color: white; /* Ensures the link is also white */
+    text-decoration: none; /* Removes underline from the link */
 }
 
 .contacts_body {
