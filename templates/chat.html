@@ -11,7 +11,7 @@
 <body>
     <div class="container-fluid h-100">
         <div class="row justify-content-center h-100">     
-            <div class="col-md-8 col-xl-6 chat">
+            <div class="col-md-10 col-xl-8 chat">
                 <div class="card">
                     <div class="card-header msg_head">
                         <div class="d-flex bd-highlight">
@@ -40,23 +40,23 @@
     </div>
 	
 	<script>
-		$(document).ready(function() {
-			$("#messageArea").on("submit", function(event) {
-				const date = new Date();
-				const hour = date.getHours();
-				const minute = date.getMinutes();
-				const str_minute = minute < 10 ? '0' + minute : minute;
-				const str_time = hour+":"+str_minute;
-				var rawText = $("#text").val();
-
-				var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + '<span class="msg_time_send">'+ str_time + '</span></div><div class="img_cont_msg"><img src="https://i.ibb.co/d5b84Xw/Untitled-design.png" class="rounded-circle user_img_msg"></div></div>';
-				
-				$("#text").val("");
-				$("#messageFormeight").append(userHtml);
-
-                var loadingHtml = '<div id="loadingMessage" class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://i.ibb.co/fSNP7Rz/icons8-chatgpt-512.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer"><span id="loadingText">.</span><span class="msg_time">' + str_time + '</span></div></div>';
+        $(document).ready(function() {
+            $("#messageArea").on("submit", function(event) {
+                const date = new Date();
+                const hour = date.getHours();
+                const minute = date.getMinutes();
+                const str_minute = minute < 10 ? '0' + minute : minute;
+                const str_time = hour+":"+str_minute;
+                var rawText = $("#text").val();
+    
+                var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + '<span class="msg_time_send">'+ str_time + '</span></div></div>';
+                
+                $("#text").val("");
+                $("#messageFormeight").append(userHtml);
+    
+                var loadingHtml = '<div id="loadingMessage" class="d-flex justify-content-start mb-4"><div class="msg_cotainer"><span id="loadingText">.</span><span class="msg_time">' + str_time + '</span></div></div>';
                 $("#messageFormeight").append(loadingHtml);
-
+    
                 var dots = 0;
                 var interval = setInterval(function() {
                     var loadingText = $("#loadingText");
@@ -64,26 +64,26 @@
                     loadingText.text("." + ".".repeat(dots));
                     dots = dots + 1;
                 }, 500);
-
-				$.ajax({
+    
+                $.ajax({
                     type: "POST",
                     url: "/chat",
                     data: { message: rawText },
                     success: function(data) {
-                        // $("#messageFormeight .msg_cotainer:last-child").remove();
                         $("#messageFormeight .d-flex:last-child").remove();
     
-                        var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://i.ibb.co/fSNP7Rz/icons8-chatgpt-512.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + data + '<span class="msg_time">' + str_time + '</span></div></div>';
+                        var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="msg_cotainer">' + data + '<span class="msg_time">' + str_time + '</span></div></div>';
                         $("#messageFormeight").append(botHtml);
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText);
                     }
                 });
-				event.preventDefault();
-			});
-		});
-	</script>
+                event.preventDefault();
+            });
+        });
+    </script>
+    
 	
 	
 </body>
