@@ -87,6 +87,7 @@ def process_message(user_input):
         "If there is a question that Thiru might not have spoken about or is not included in your dataset,"
         "please tell the user that the chatbot is based on Thiru's policies and that they should reach out to Thirus campaign directly"
         "Through the email teamthiru@votethiru.com"
+        "Make sure to kindy turn down request that are unrelated - for example if someone asks you to implement something in Python"
         "\n\n\n\n\nUser:"
 )
     return str(agent.chat(prompt_template + user_input))
