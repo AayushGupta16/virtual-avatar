@@ -14,12 +14,12 @@ html {
 
 .card {
     width: 100vw;        /* Set the width to 100% of the viewport width */
-    height: 100vh;       /* Set the height to 100% of the viewport height */
+    height: 90vh;       /* Set the height to 100% of the viewport height */
     border-radius: 15px !important;
     background-color: rgba(0, 0, 0, 0.4) !important;
     box-sizing: border-box; /* Includes padding and border in the element's total width and height */
     position: fixed;     /* Optional: makes the card stay in place during scrolling */
-    top: 0;              /* Aligns the top edge of the element with the viewport */
+    top: 10%;              /* Aligns the top edge of the element with the viewport */
     left: 0;             /* Aligns the left edge of the element with the viewport */
 }
 
