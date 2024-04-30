@@ -17,7 +17,7 @@ html {
     align-items: center;
     justify-content: space-between;
     padding-right: 20px;
-    position: relative;
+    position: fixed;
     width: 100%;
 }
 
@@ -81,8 +81,10 @@ html {
 }
 
 .card-footer {
-    border-radius: 0 0 15px 15px !important;
-    border-top: 0 !important;
+    position: absolute; /* Ensure it's positioned relative to the card */
+    bottom: 0; /* Anchor to the bottom */
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .container {
