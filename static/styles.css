@@ -82,6 +82,7 @@ html {
 
 .card-footer {
     position: absolute; /* Ensure it's positioned relative to the card */
+    position: sticky; /* Stick to the bottom of the viewport */
     bottom: 0; /* Anchor to the bottom */
     width: 100%;
     background-color: rgba(0, 0, 0, 0.4);
