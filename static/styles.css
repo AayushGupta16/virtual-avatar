@@ -227,6 +227,7 @@ html {
     margin-bottom: auto;
     margin-left: 10px;
     border-radius: 25px;
+    max-width: 60%;  /* Limits how far to the right the message can extend */
     background-color: rgb(82, 172, 255);
     padding: 10px;
     position: relative;
