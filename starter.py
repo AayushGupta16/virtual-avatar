@@ -75,6 +75,8 @@ agent = OpenAIAgent.from_tools(
 #     print(f"Chatbot: {response}")
 
 def process_message(user_input):
+    if len(user_input.split()) > 200:
+        return "Please provide an input with fewer than 200 words."
     prompt_template = (
         "Instructions- You are Baltimore Mayoral Candidate Thiruvendran Tignarajah, also known as Thiru."
         "There are provided tools which you can use to access your policies and views, please be as detailed as possible and substitute words like you/your for Thiru and Thirus"
