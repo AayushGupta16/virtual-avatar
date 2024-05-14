@@ -49,7 +49,7 @@ agent = OpenAIAgent.from_tools(
     llm_kwargs={
         "temperature": 0,
         "max_tokens": 500,
-        "model_name": "gpt-4-0125-preview",
+        "model_name": "gpt-4o",
         "openai_api_key": os.getenv("OPENAI_API_TOKEN"),
     },
     verbose=True  # Enables verbose output to see the agent's internal process
